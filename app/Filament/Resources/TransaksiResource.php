@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TransaksiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,6 +26,8 @@ class TransaksiResource extends Resource
     protected static ?string $model = Transaksi::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static ?string $navigationLabel = 'Transaksi';
 
     public static function form(Form $form): Form
     {
@@ -132,10 +135,18 @@ class TransaksiResource extends Resource
                 TextColumn::make('created_at')->label('Transaction Date')->date('F j, Y')->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Filter by Status')
+                    ->options([
+                        'Success' => 'success',
+                        'Pending' => 'pending',
+                        'Failed' => 'failed',
+                    ])
+                    ->attribute('status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

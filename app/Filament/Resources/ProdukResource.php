@@ -11,18 +11,21 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProdukResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProdukResource\RelationManagers;
-use Filament\Tables\Columns\ImageColumn;
 
 class ProdukResource extends Resource
 {
     protected static ?string $model = Produk::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static ?string $navigationLabel = 'Produk';
 
     public static function form(Form $form): Form
     {
@@ -64,8 +67,8 @@ class ProdukResource extends Resource
                     ->limit(10)
                     ->sortable(),
                 ImageColumn::make('foto')
-                        ->searchable()
-                        ->sortable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('deskripsi')
                     ->searchable()
                     ->limit(10)
@@ -81,7 +84,14 @@ class ProdukResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->label('Filter by Category')
+                    ->options([
+                        'Elektrik' => 'Elektrik',
+                        'Akustik' => 'Akustik',
+                        'Bass' => 'Bass',
+                    ])
+                    ->attribute('category'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

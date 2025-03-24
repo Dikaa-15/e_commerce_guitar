@@ -25,6 +25,8 @@ class KeranjangResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static ?string $navigationLabel = 'Keranjang';
+
     public static function form(Form $form): Form
     {
         return $form
